@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Char-App Chat</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f7f7f7;
+      padding: 20px;
+    }
+    #chat-box {
+      background: white;
+      border: 1px solid #ccc;
+      height: 300px;
+      overflow-y: scroll;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+    }
+    #msg-input {
+      width: 75%;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>พูดคุยกับเพื่อน ๆ</h2>
+  <div id="chat-box"></div>
+
+  <input id="msg-input" placeholder="พิมพ์ข้อความ..." />
+  <button onclick="sendMessage()">ส่ง</button>
+
+  <script>
+    const box = document.getElementById("chat-box");
+    const input = document.getElementById("msg-input");
+
+    function renderChat() {
+      const msgs = JSON.parse(localStorage.getItem("chat") || "[]");
+      box.innerHTML = msgs.map(msg => `<div>${msg}</div>`).join("");
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function sendMessage() {
+      const text = input.value.trim();
+      if (text !== "") {
+        const msgs = JSON.parse(localStorage.getItem("chat") || "[]");
+        msgs.push(text);
+        localStorage.setItem("chat", JSON.stringify(msgs));
+        input.value = "";
+        renderChat();
+      }
+    }
+
+    renderChat();
+  </script>
+
+</body>
+</html>
